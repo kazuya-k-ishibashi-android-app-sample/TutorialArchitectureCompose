@@ -3,11 +3,14 @@ package com.kishibashi.androidapp.tutorial.architecture.compose
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.*
+import androidx.compose.foundation.text.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.*
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
 import kotlinx.coroutines.launch
 
@@ -22,7 +25,27 @@ fun MainScreen() {
     var inputMessage by remember { mutableStateOf(TextFieldValue("")) }
 
     val listState = rememberLazyListState()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
+
+    fun isInputMessageEmpty(): Boolean =
+        inputMessage.text.trim().isEmpty()
+
+    fun sendMessage() {
+        if (isInputMessageEmpty()) return
+
+        messages.add(inputMessage.text)
+        // 入力欄をクリア
+        inputMessage = TextFieldValue("")
+        // フォーカスを外してキーボードを閉じる
+        focusManager.clearFocus()
+        keyboardController?.hide()
+        // 最下部へスクロール
+        coroutineScope.launch {
+            listState.animateScrollToItem(messages.lastIndex)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -83,7 +106,7 @@ fun MainScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
 
                 OutlinedTextField(
@@ -92,29 +115,29 @@ fun MainScreen() {
                     modifier = Modifier
                         .weight(1f),
                     placeholder = { Text("メッセージを入力") },
-                    singleLine = true
+                    singleLine = false,
+                    maxLines = 5,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Send
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSend = { sendMessage() }
+                    )
                 )
 
                 Spacer(Modifier.width(8.dp))
 
                 Button(
-                    onClick = {
-                        if (inputMessage.text.isNotBlank()) {
-                            messages.add(inputMessage.text)
-                            // 入力欄をクリア
-                            inputMessage = TextFieldValue("")
-                            // 最下部へスクロール
-                            coroutineScope.launch {
-                                listState.animateScrollToItem(messages.lastIndex)
-                            }
-                        }
-                    },
+                    onClick = { sendMessage() },
+                    enabled = !isInputMessageEmpty(),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
-                    contentPadding = PaddingValues(16.dp, 12.dp)
+                    contentPadding = PaddingValues(16.dp, 12.dp),
+                    modifier = Modifier.padding(0.dp, 4.dp)
                 ) {
 
                     Icon(
