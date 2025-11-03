@@ -18,6 +18,19 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    /**
+     * sourceSets
+     *
+     * - main
+     * - debug
+     * - release
+     */
+    sourceSets {
+        getByName("debug") {
+            java.srcDirs("src/preview/java")
+        }
+    }
+
     buildFeatures {
         compose = true
     }

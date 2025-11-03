@@ -9,8 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.kishibashi.androidapp.tutorial.architecture.compose.ui.theme.AppTheme
 
 @Composable
 fun MainScreen() {
@@ -27,13 +25,5 @@ fun MainScreen() {
 
             Text("Android Architecture")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    AppTheme {
-        MainScreen()
     }
 }
