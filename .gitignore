@@ -1,0 +1,19 @@
+# Gradle
+.gradle
+/build
+/release
+
+# Kotlin
+/.kotlin
+
+# IntelliJ IDEA
+*.iml
+.idea
+
+# Android Studio
+.cxx
+.externalNativeBuild
+/captures
+
+# Local configuration
+local.properties
