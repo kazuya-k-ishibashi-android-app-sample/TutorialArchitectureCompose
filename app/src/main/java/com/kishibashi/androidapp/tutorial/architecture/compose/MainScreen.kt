@@ -1,6 +1,7 @@
 package com.kishibashi.androidapp.tutorial.architecture.compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -8,6 +9,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.*
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,6 +20,9 @@ fun MainScreen() {
     // TextFieldValue
     // カーソル位置やテキスト選択状態も保持できる
     var inputMessage by remember { mutableStateOf(TextFieldValue("")) }
+
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -38,11 +43,39 @@ fun MainScreen() {
         ) {
 
             // メッセージ表示欄
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
+                    .padding(16.dp, 8.dp),
+                state = listState
             ) {
+
+                items(messages) { message ->
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+
+                        Surface(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .wrapContentWidth(Alignment.End)
+                        ) {
+
+                            Text(
+                                text = message,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.padding(12.dp, 8.dp)
+                            )
+                        }
+                    }
+                }
             }
 
             // メッセージ入力・送信欄
@@ -70,6 +103,10 @@ fun MainScreen() {
                             messages.add(inputMessage.text)
                             // 入力欄をクリア
                             inputMessage = TextFieldValue("")
+                            // 最下部へスクロール
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(messages.lastIndex)
+                            }
                         }
                     },
                     shape = RoundedCornerShape(8.dp),
