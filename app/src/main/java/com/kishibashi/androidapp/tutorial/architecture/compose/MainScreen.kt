@@ -1,18 +1,12 @@
 package com.kishibashi.androidapp.tutorial.architecture.compose
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.res.*
+import androidx.compose.ui.unit.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,12 +27,52 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
         ) {
 
-            Text("Android Architecture")
+            // メッセージ表示欄
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+            }
+
+            // メッセージ入力・送信欄
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = {},
+                    modifier = Modifier
+                        .weight(1f),
+                    placeholder = { Text("メッセージを入力") },
+                    singleLine = true
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    contentPadding = PaddingValues(16.dp, 12.dp)
+                ) {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_send_24dp),
+                        contentDescription = "送信"
+                    )
+                }
+            }
         }
     }
 }
