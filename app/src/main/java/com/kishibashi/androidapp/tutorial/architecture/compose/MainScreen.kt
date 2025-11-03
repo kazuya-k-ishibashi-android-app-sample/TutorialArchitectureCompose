@@ -13,12 +13,20 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
 
-    val messages = remember { mutableStateListOf<String>() }
+    val messageSentDateTimeFormatter = remember {
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            .withZone(ZoneId.systemDefault())
+    }
+
+    val messages = remember { mutableStateListOf<ChatMessage>() }
 
     // TextFieldValue
     // カーソル位置やテキスト選択状態も保持できる
@@ -35,7 +43,13 @@ fun MainScreen() {
     fun sendMessage() {
         if (isInputMessageEmpty()) return
 
-        messages.add(inputMessage.text)
+        val newMessage = ChatMessage(
+            id = "chat_message_" + System.currentTimeMillis().toString(),
+            text = inputMessage.text,
+            createdAt = Instant.now()
+        )
+        messages.add(newMessage)
+
         // 入力欄をクリア
         inputMessage = TextFieldValue("")
         // フォーカスを外してキーボードを閉じる
@@ -83,19 +97,36 @@ fun MainScreen() {
                         horizontalArrangement = Arrangement.End
                     ) {
 
-                        Surface(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier
-                                .fillMaxWidth(0.9f)
-                                .wrapContentWidth(Alignment.End)
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            modifier = Modifier.fillMaxWidth(0.9f)
                         ) {
 
+                            // 送信日時
                             Text(
-                                text = message,
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.padding(12.dp, 8.dp)
+                                text = messageSentDateTimeFormatter.format(message.createdAt),
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier
+                                    .padding(bottom = 2.dp)
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(Alignment.End)
                             )
+
+                            // 吹き出し
+                            Surface(
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .wrapContentWidth(Alignment.End)
+                            ) {
+
+                                Text(
+                                    text = message.text,
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier.padding(12.dp, 8.dp)
+                                )
+                            }
                         }
                     }
                 }
