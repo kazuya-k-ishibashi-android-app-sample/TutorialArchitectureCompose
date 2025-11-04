@@ -16,11 +16,10 @@ import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.ChatRoom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatRoomListScreen() {
-
-    val chatRooms = listOf(
-        ChatRoom(id = "chatroom_1", name = "Chat 1")
-    )
+fun ChatRoomListScreen(
+    chatRooms: List<ChatRoom>,
+    onRoomClick: (chatRoom: ChatRoom) -> Unit
+) {
 
     Scaffold(
         topBar = {
@@ -46,7 +45,8 @@ fun ChatRoomListScreen() {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .clickable { onRoomClick(chatRoom) },
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.room.ChatRoomScreen
+import com.kishibashi.androidapp.tutorial.architecture.compose.ui.NavGraph
 import com.kishibashi.androidapp.tutorial.architecture.compose.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                ChatRoomScreen()
+                NavGraph()
             }
         }
     }

@@ -2,12 +2,16 @@ package com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.room
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.ChatRoom
 import com.kishibashi.androidapp.tutorial.architecture.compose.ui.theme.AppTheme
 
 @Preview(showBackground = true)
 @Composable
 fun ChatRoomScreenPreview() {
     AppTheme {
-        ChatRoomScreen()
+        ChatRoomScreen(
+            chatRoom = ChatRoom(id = "chatroom_1", name = "Chat 1"),
+            onBack = {}
+        )
     }
 }

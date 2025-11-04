@@ -14,6 +14,7 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
 import com.kishibashi.androidapp.tutorial.architecture.compose.R
 import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.ChatMessage
+import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.ChatRoom
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -21,7 +22,10 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatRoomScreen() {
+fun ChatRoomScreen(
+    chatRoom: ChatRoom,
+    onBack: () -> Unit
+) {
 
     val messageSentDateTimeFormatter = remember {
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -66,10 +70,19 @@ fun ChatRoomScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Chat") },
+                title = { Text(chatRoom.name) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back_24dp),
+                            contentDescription = "Back"
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }
