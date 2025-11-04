@@ -1,4 +1,4 @@
-package com.kishibashi.androidapp.tutorial.architecture.compose
+package com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat
 
 import java.time.Instant
 

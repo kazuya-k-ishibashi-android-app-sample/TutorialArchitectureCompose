@@ -1,4 +1,4 @@
-package com.kishibashi.androidapp.tutorial.architecture.compose
+package com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.room
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
+import com.kishibashi.androidapp.tutorial.architecture.compose.R
+import com.kishibashi.androidapp.tutorial.architecture.compose.ui.chat.ChatMessage
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun ChatRoomScreen() {
 
     val messageSentDateTimeFormatter = remember {
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
